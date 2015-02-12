@@ -14,16 +14,34 @@
 // return a matrix (an array of arrays) representing a single nxn chessboard, with n rooks placed such that none of them can attack each other
 
 window.findNRooksSolution = function(n) {
-  var temp = new Board({n: n});
-  for(var i = 0; i<n; i++){
-    temp.togglePiece(i,i);
-  }
+  // var temp = new Board({n: n});
+  // for(var i = 0; i<n; i++){
+  //   temp.togglePiece(i,i);
+  // }
+  // var solution = [];
+  // for(var key in temp.attributes){
+  //   if(key !== 'n'){
+  //     solution.push(temp.attributes[key]);
+  //   }
+  // }
+
+  var board = new Board({n: n});
   var solution = [];
-  for(var key in temp.attributes){
-    if(key !== 'n'){
-      solution.push(temp.attributes[key]);
+  var checkRow = function(rowIndex) {
+    if (rowIndex>=n) {
+      return;
     }
-  }
+    for (var i=0; i<row.length; i++) {
+      board.togglePiece(rowIndex,i);
+      if (!board.hasAnyRooksConflicts()) {
+        solution.push(board.get(rowIndex));
+        checkRow(rowIndex+1);
+        return;
+      }
+      board.togglePiece(rowIndex,i);
+    }
+  };
+  checkRow(0);
 
   console.log('Single solution for ' + n + ' rooks:', JSON.stringify(solution));
   return solution;
@@ -33,7 +51,7 @@ window.findNRooksSolution = function(n) {
 
 // return the number of nxn chessboards that exist, with n rooks placed such that none of them can attack each other
 window.countNRooksSolutions = function(n) {
-  //var solutionCount = undefined; //fixme
+  var solutionCount = undefined; //fixme
   function factorial(n) {
     if (n===0) {
       return 1;
@@ -42,6 +60,19 @@ window.countNRooksSolutions = function(n) {
     }
   }
   var solutionCount = factorial(n);
+
+  // var solutionCount = 0;
+
+  // var board = new Board({n: n});
+  // for (var i=0; i<n; i++) {
+  //   for (var j=0; j<n; j++) {
+  //     board.togglePiece(i,j);
+  //     if (board.hasAnyRooksConflicts()) {
+  //       board.togglePiece(i,j);
+  //     }
+  //   }
+  // }
+
   console.log('Number of solutions for ' + n + ' rooks:', solutionCount);
   return solutionCount;
 };
