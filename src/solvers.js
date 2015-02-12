@@ -14,43 +14,17 @@
 // return a matrix (an array of arrays) representing a single nxn chessboard, with n rooks placed such that none of them can attack each other
 
 window.findNRooksSolution = function(n) {
-  console.log('findNRooksSolution: ' + n)
-  var solution = new Board({n: n}); //fixme
-
-  var insertRooks = function(){
-    debugger;
-    var counter = 0;
-    var randRowIndex = Math.floor(Math.random() * n);
-    var randColIndex = Math.floor(Math.random() * n);
-    if(n = 1){
-      randRowIndex = 0;
-      randColIndex = 0;
-    }
-    console.log(randRowIndex, randColIndex);
-    if(solution.get(randRowIndex)[randColIndex] !== 1 && !solution.hasRowConflictAt(randRowIndex) && !solution.hasColConflictAt(randColIndex)){
-      counter++;
-      solution.togglePiece(randRowIndex, randColIndex);
-    }
-
-    if(counter < n){
-      console.log('recurse');
-      insertRooks();
-    }
-  };
-
-
-  //for(var i=0; i<n; i++){
-    insertRooks();
-  //}
-  var temp = solution.attributes;
-  solution = [];
-  for (var key in temp){
-    if(key !== 'n'){
-      solution.push(temp[key]);
-      console.log(solution);
-    }
-    
+  var temp = new Board({n: n});
+  for(var i = 0; i<n; i++){
+    temp.togglePiece(i,i);
   }
+  var solution = [];
+  for(var key in temp.attributes){
+    if(key !== 'n'){
+      solution.push(temp.attributes[key]);
+    }
+  }
+
   console.log('Single solution for ' + n + ' rooks:', JSON.stringify(solution));
   return solution;
 };
@@ -59,8 +33,15 @@ window.findNRooksSolution = function(n) {
 
 // return the number of nxn chessboards that exist, with n rooks placed such that none of them can attack each other
 window.countNRooksSolutions = function(n) {
-  var solutionCount = undefined; //fixme
-
+  //var solutionCount = undefined; //fixme
+  function factorial(n) {
+    if (n===0) {
+      return 1;
+    } else {
+      return n*factorial(n-1);
+    }
+  }
+  var solutionCount = factorial(n);
   console.log('Number of solutions for ' + n + ' rooks:', solutionCount);
   return solutionCount;
 };
